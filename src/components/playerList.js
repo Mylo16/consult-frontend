@@ -1,24 +1,74 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import playersData from '../dummyData/players.json';
-import { fakeBaseQuery } from "@reduxjs/toolkit/query";
+import playersData from '../dummyData/players';
 import images from "../utils/images";
+import teams from '../dummyData/teams';
+import PlayerDetails from "./playerDetails";
+import { useDispatch, useSelector } from "react-redux";
+import { addPlayer } from "../redux/playerSelectSlice";
 
-const PlayerList = ({ showSquad }) => {
-  const [players] = useState(playersData.players);
-  const [positionCriteria, setPositionCriteria] = useState('All');
+const PlayerList = ({ squadCategory, showSquad }) => {
+  const [players] = useState(playersData);
+  const [positionCriteria, setPositionCriteria] = useState(squadCategory || 'All');
   const [teamCriteria, setTeamCriteria] = useState('All');
   const [priceCriteria, setPriceCriteria] = useState(12); // New price filter state
-  const [filteredPlayers, setFilteredPlayers] = useState(players);
+  const [filteredPlayers, setFilteredPlayers] = useState(
+    players.filter((player) => squadCategory === 'All' || player.position === squadCategory)
+  );
   const [showPositions, setShowPositions] = useState(false);
   const [showTeams, setShowTeams] = useState(false);
   const [showPrices, setShowPrices] = useState(false);
   const [pointActive, setPointActive] = useState(false);
   const [priceActive, setPriceActive] = useState(true);
+  const [showPlayerDetails, setShowPlayerDetails] = useState(false);
+  const [playerDetails, setPlayerDetails] = useState('');
+  const squad = useSelector((state) => state.squad);
+  const dispatch = useDispatch();
 
   const positions = ['FWD', 'MID', 'DEF', 'GK'];
-  const teams = ['aduana', 'kotoko', 'samartex', 'bechem', 'lions', 'medeama', 'nsoatreman', 'berekum', 'hearts', 'heartsOfLions'];
-  const priceRanges = [4.0 , 4.5, 5.0, 5.5, 6.0, 6.5, 7.0, 7.5, 8.0, 8.5, 9.0, 9.5, 10.0, 10.5, 11.0, 11.5, 12.0];
+
+  const handlePlayerSelection = (player) => {
+    const isPlayerAlreadySelected = squad.selectedPlayers.find(p => p.id === player.id);
+    if (isPlayerAlreadySelected) {
+      alert(`${player.name} is already selected!`);
+      return;
+    }
+
+    const positionLimit = {
+      FWD: 3,
+      MID: 5,
+      DEF: 5,
+      GK: 2
+    };
+  
+    const { position } = player;
+    const currentPlayers = squad[position].filter(p => p !== null);
+  
+    if (currentPlayers.length < positionLimit[position]) {
+      dispatch(addPlayer({ position, player }));
+    } else {
+      alert(`Maximum ${positionLimit[position]} players are allowed in the ${position} position`);
+    }
+  }
+
+  const handleClickOutside = (event) => {
+    if(showPlayerDetails && !event.target.closest('.pd-ctn')) {
+      setShowPlayerDetails(false);
+    }
+  }
+
+  const handlePlayerInfoClick = (player, event) => {
+    event.stopPropagation();
+    setPlayerDetails(player);
+    setShowPlayerDetails(true);
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    }
+  }, [showPlayerDetails]);
 
   const filterPlayers = (position, team, price) => {
     let filtered = players.filter((player) => 
@@ -29,10 +79,15 @@ const PlayerList = ({ showSquad }) => {
     setFilteredPlayers(filtered);
   };
 
+  useEffect(() => {
+    setPositionCriteria(squadCategory);
+    filterPlayers(squadCategory, teamCriteria, priceCriteria);
+  }, [squadCategory, teamCriteria, priceCriteria]);
+
   const handlePositionFilter = (position) => {
-    setPositionCriteria(position);
     filterPlayers(position, teamCriteria, priceCriteria);
     setShowPositions(false);
+    setPositionCriteria(position);
   };
 
   const handleTeamFilter = (team) => {
@@ -66,10 +121,18 @@ const PlayerList = ({ showSquad }) => {
   }, [positionCriteria, teamCriteria, priceCriteria]);
 
   const getSliderStyle = () => {
-    const percentage = ((priceCriteria - 4) / 8) * 100; // 20 is the max price
+    const percentage = ((priceCriteria - 4) / 8) * 100;
     return {
       background: `linear-gradient(to right, #01d371 ${percentage}%, white ${percentage}%)`
     };
+  };
+
+  const handleDetailsClose = () => {
+    setShowPlayerDetails(!showPlayerDetails);
+  }
+
+  const isPlayerSelected = (player) => {
+    return squad.selectedPlayers.some(fwd => fwd.id === player.id)
   };
 
   return (
@@ -93,7 +156,7 @@ const PlayerList = ({ showSquad }) => {
             <ul className="po-filter-list-ctn">
               <div className="po-filter-list">
               {positions.map((position) => (
-                <li key={position} onClick={() => handlePositionFilter(position)}>{position}</li>
+                <li className={`${positionCriteria === position ? 'active-filter':''}`} key={position} onClick={() => handlePositionFilter(position)}>{position}</li>
               ))}
               </div>
             <button onClick={() => handlePositionFilter('All')}>Reset</button>
@@ -112,7 +175,10 @@ const PlayerList = ({ showSquad }) => {
             <ul className="tm-filter-list-ctn">
               <div className="tm-filter-list">
               {teams.map((team) => (
-                <li key={team} onClick={() => handleTeamFilter(team)}>{team}</li>
+                <div className="pl-tm">
+                  <img className="pl-tm-logo" src={team.logo}/>
+                  <li key={team.id} onClick={() => handleTeamFilter(team.short)}>{team.team_name}</li>
+                </div>
               ))}
               </div>
             <button onClick={() => handleTeamFilter('All')}>Reset</button>
@@ -165,21 +231,37 @@ const PlayerList = ({ showSquad }) => {
 
       <div className="plyr-tb">
         {filteredPlayers.length !== 0 ? (
-          filteredPlayers.map((player) => (
-            <div className="tb-row" key={player.id}>
+          filteredPlayers.map((player) => {
+            const isSelected = isPlayerSelected(player);
+
+            return (
+            <div className={`tb-row ${isSelected ? 'muted' : ''}`} key={player.id}>
               <div className="tb-plyr-name">
-                <div className="plyr-availability"><img src={player.availaility === '100%' ? images.info:images.warning}/></div>
-                <div>{player.name}</div>
+                <div className="plyr-availability" onClick={(event) => handlePlayerInfoClick(player, event)}><img src={player.availaility === '100%' ? images.info:images.warning}/></div>
+                <div onClick={() => {handlePlayerSelection(player); showSquad();}} className="plyr-details-ctn">
+                  <div><img className="pl-plyr-jersey" src={player.jersey} alt="player-jersey" /></div>
+                  <div className="plyr-details-txt">
+                    <div>{player.name}</div>
+                    <div className="muted-txt">{player.team}</div>
+                  </div>
+                </div>
               </div>
-              <div className="tb-plyr-price">₡ {player.price.toFixed(1)}m</div>
+              <div className="tb-plyr-price">
+                <div>₡ {player.price.toFixed(1)}m</div>
+                <div className="muted-txt">{player.position}</div>
+              </div>
               <div className="tb-plyr-points">{player.points}</div>
+              <div className="inactive-player"></div>
             </div>
-          ))
+            )
+          })
         ) : (
           <div className="no-list">No list of players for this sort</div>
         )}
       </div>
-
+      <div className={`pd-ctn ${showPlayerDetails ? 'show':''}`}>
+        <PlayerDetails details={playerDetails} closeDetails={handleDetailsClose} />
+      </div>
     </div>
   );
 };

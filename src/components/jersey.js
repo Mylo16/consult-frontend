@@ -2,7 +2,7 @@ import React from "react";
 
 const Jersey = () => {
   return(
-    <svg xmlns="http://www.w3.org/2000/svg" width="62" height="57" fill="none" viewBox="0 0 62 57">
+    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="57" fill="none" viewBox="0 0 62 57">
       <g clipPath="url(#C)">
         <mask id="A" maskUnits="userSpaceOnUse" x="-1" y="3" width="64" height="48" mask-type="alpha">
           <path fill="#4CAF50" d="M-1 3.5h64v47H-1z"/>

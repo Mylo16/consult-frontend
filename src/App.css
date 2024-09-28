@@ -33,7 +33,7 @@ body {
 }
 
 a {
-  color: #01d371;
+  color: wheat;
   text-decoration: none;
 }
 
@@ -336,312 +336,6 @@ header {
   background-color: var(--primary-accent);
 }
 
-/**** PLAYER LIST *****/
-.player-list-container {
-  opacity: 0;
-  position: absolute;
-  top: 0;
-  left: 100%;
-  width: 100%;
-  transition: all 0.5s ease-in-out;
-}
-
-.sln-container {
-  width: 90%;
-  margin: auto;
-  background-color: var(--secondary-bg);
-  padding: 0.5em;
-  border-radius: 24px;
-}
-
-.sln-row1 {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 1em;
-}
-
-.sln-row2 {
-  display: flex;
-  width: 90%;
-  margin: auto;
-  justify-content: space-between;
-  position: relative;
-}
-
-.sort-ctn {
-  background-color: #01d371;
-  padding: 0.5em;
-  width: 25%;
-  border-radius: 15px;
-  overflow: hidden;
-
-}
-
-.dropdown-ctn {
-  font-size: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.dropdown {
-  position: relative;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.dropdown-ctn::after {
-  content: '\25BC';
-  font-size: 10px;
-  margin-left: 8px;
-  display: inline-block;
-  transform: rotate(0deg);
-  transition: transform 0.3s ease;
-}
-
-.dropdown-ctn.open::after {
-  transform: rotate(180deg);
-}
-
-.sln-row3 {
-  display: flex;
-  margin-top: 1em;
-  width: 100%;
-  padding: 0;
- border-bottom: solid 1px rgba(255, 255, 255, 0.151);
-}
-
-.plyr-hd {
-  width: 50%;
-}
-
-.ad-sorts {
-  display: flex;
-  width: 50%;
-  font-size: 14px;
-}
-
-.ad-sort-ctn,
-.ad-sort-ctn2 {
-  display: flex;
-  width: 50%;
-  justify-content: center;
-}
-
-.ad-sort-ctn.active-sort,
-.ad-sort-ctn2.active-sort {
-  border-bottom: solid 1px var(--focus-outline);
-}
-
-.pick-sq.slide-out {
-  transform: translateX(-100%);
-}
-
-.player-list-container.slide-in {
-  left: 0;
-  top: 40%;
-  opacity: 1;
-}
-
-.plyr-tb {
-  display: flex;
-  flex-direction: column;
-  height: 60vh;
-  overflow: scroll;
-  background-color: black;
-}
-
-.tb-row {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  position: relative;
-  padding: 0.5em;
-}
-
-.tb-row::after {
-  position: absolute;
-  width: 100%;
-  content: '';
-  left: 0;
-  bottom: 0;
-  height: 0.5px;
-  background: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgb(255, 253, 253) 50%, rgba(0, 0, 0, 0) 100%);
-}
-
-.tb-plyr-name {
-  width: 50%;
-  display: flex;
-  align-items: center;
-  gap: 0.5em;
-}
-
-.plyr-availability {
-  border-right: solid 1px var(--primary-accent);
-  display: flex;
-  padding-right: 0.5em;
-}
-
-.plyr-availability img {
-  width: 20px;
-}
-
-.tb-plyr-price,
-.tb-plyr-points {
-  width: 25%;
-  text-align: center;
-  font-size: 14px;
-}
-
-.no-list {
-  text-align: center;
-  color: var(--muted-text);
-}
-
-.po-filter-list-ctn,
-.tm-filter-list-ctn {
-  position: absolute;
-  left: -5%;
-  top: 80%;
-  background-color: #502828;
-  backdrop-filter: blur(5px);
-  width: 100%;
-  border-radius: 15px;
-  padding: 0.5em;
-}
-
-.po-filter-list {
-  padding-inline-start: 0;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1em;
-  align-items: center;
-  gap: 1em;
-}
-
-.tm-filter-list {
-  padding-inline-start: 0;
-  padding: 0.5em;
-  width: 100%;
-  border-radius: 15px;
-}
-
-.tm-filter-list li,
-.po-filter-list li {
-  list-style: none;
-}
-
-.po-filter-list li {
-  background-color: #01d371;
-  padding: 1em;
-  border-radius: 50%;
-}
-
-.pr-filter-ctn {
-  margin: 1em 0;
-  position: absolute;
-  width: 110%;
-  left: -5%;
-  top: 80%;
-  background-color: #502828;
-  backdrop-filter: blur(5px);
-  border-radius: 15px;
-  padding: 5px;
-} 
-
-
-
-/* Slider input */
-input[type="range"] {
-  -webkit-appearance: none; /* Remove default styling */
-  width: 100%;
-  height: 5px;
-  background: transparent;
-  cursor: pointer;
-  outline: none;
-  margin: 1em 0;
-  padding: 0;
-}
-
-/* Track (default state) */
-input[type="range"]::-webkit-slider-runnable-track {
-  width: 100%;
-  height: 5px;
-  background: #ddd;
-  border-radius: 5px;
-  position: relative;
-}
-
-/* Styled Track (color effect before knob) */
-input[type="range"]::-moz-range-track {
-  width: 100%;
-  height: 5px;
-  background: #ddd;
-  border-radius: 5px;
-  position: relative;
-}
-
-/* Slider Thumb */
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  height: 20px;
-  width: 20px;
-  background: #01d371;
-  border-radius: 50%;
-  cursor: pointer;
-  margin-top: -6px; /* Centers the thumb vertically */
-  position: relative;
-}
-
-input[type="range"]::-moz-range-thumb {
-  height: 20px;
-  width: 20px;
-  background: #01d371;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-/* Track color filling before thumb */
-input[type="range"]::-moz-range-progress {
-  background-color: #01d371;
-  height: 8px;
-  border-radius: 5px;
-}
-
-input[type="range"]::-webkit-slider-runnable-track {
-  background: linear-gradient(to right, #01d371 0%, #01d371 var(--value), transparent var(--value), transparent 100%);
-}
-
-input[type="range"]::-ms-track {
-  width: 100%;
-  height: 8px;
-  background: transparent;
-  border-color: transparent;
-  color: transparent;
-}
-
-/* Styles for the filled part in IE */
-input[type="range"]::-ms-fill-lower {
-  background: #01d371;
-  border-radius: 5px;
-}
-
-input[type="range"]::-ms-fill-upper {
-  background: #ddd;
-  border-radius: 5px;
-}
-
-/* Customizing tick marks under the slider */
-datalist {
-  display: flex;
-  justify-content: space-between;
-}
-
-datalist option {
-  text-align: center;
-  font-size: 0.75rem;
-}
-
 
 /******** CREATE TEAM DESIGN ********/
 .pick-sq-container {
@@ -714,6 +408,10 @@ datalist option {
   font-weight: 500;
 }
 
+.budget-value.neg-value {
+  color: var(--error-color);
+}
+
 .fill-refresh-container {
   display: flex;
   gap: 10px;
@@ -736,7 +434,7 @@ datalist option {
 .pitch {
   max-width: 100vw;
   width: 100%;
-  height: 530px;
+  height: 550px;
 }
 
 .pitch-sponsors {
@@ -764,7 +462,7 @@ datalist option {
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  gap: 2rem;
+  gap: 3rem;
 }
 
 .fwd-row,
@@ -773,16 +471,7 @@ datalist option {
 .gk-row {
   display: flex;
   justify-content: center;
-  gap: 1em;
-}
-
-.fwd-row > div,
-.mid-row > div,
-.def-row > div,
-.gk-row > div {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  gap: 1.5em;
 }
 
 .pos {
@@ -801,10 +490,76 @@ datalist option {
   min-height: 17px
 }
 
+.jersey {
+  width: 50px;
+  height: 50px;
+}
+
+.fwd,
+.mid,
+.def,
+.gk {
+  position: relative;
+}
+
+.plyr-detail {
+  position: absolute;
+  top: 75%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.plyr-name {
+  font-size: 10px;
+  background: linear-gradient(90deg, #DF1EFF -20.65%, #01d371 100%);
+  width: 60px;
+  text-align: center;
+}
+
+.plyr-price {
+  font-size: 10px;
+  background-color: var(--secondary-bg);
+  width: 100%;
+  padding: 0 5px;
+  text-align: center;
+}
+
+.close-btn-ctn {
+  background-color: var(--error-color);
+  height: 13px;
+  width: 13px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: -5px;
+}
+
+.close-btn {
+  width: 10px;
+}
+
+.create-tm-btn {
+  background-color: var(--primary-accent);
+  color: rgb(8, 8, 54);
+  font-size: 15px;
+  font-weight: 500;
+  width: 300px;
+  margin: 1.5em auto 0 auto;
+}
+
+.create-tm-btn.btn-disabled {
+  opacity: 0.5;
+  background-color: var(--primary-accent);
+}
+
 /***** FIXTURES *****/
 .fix-container {
   background-color: var(--secondary-bg);
-  margin: 140px 5px 20px 5px;
+  margin: 100px 5px 20px 5px;
   padding: 10px 5px;
   border-radius: 15px;
   background: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgb(44, 42, 42) 50%, rgba(0, 0, 0, 0) 100%);

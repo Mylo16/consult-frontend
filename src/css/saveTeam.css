@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,800;1,300&display=swap');
+
+:root {
+  --primary-bg: #121212;
+  --secondary-bg: rgb(30, 30, 30);
+  --accent-bg: #2C2C2C;
+
+  --primary-text: #FFFFFF;
+  --secondary-text: #B3B3B3;
+  --muted-text: #757575;
+
+  --primary-accent: rgb(255, 152, 0);
+  --secondary-accent: #FFC107;
+  --error-color: #FF5722;
+  --success-color: #4CAF50;
+
+  --border-color: #333333;
+
+  --hover-bg: #333333;
+  --focus-outline: #FF9800;
+}
+
+.save-tm-ctn {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 100%;
+  width: 100%;
+  transition: all 0.5s ease-in-out;
+}
+
+.save-tm-ctn.slide-in {
+  left: 0;
+  top: 40%;
+  opacity: 1;
+}
+
+.subs-ctn {
+  display: flex;
+  width: 90%;
+  justify-content: space-between;
+  margin: auto;
+  border: solid 1px wheat;
+  background-color: #2e2a0434;
+  border-radius: 15px;
+}
+
+.sub-ctn.highlighted {
+  background-color: wheat;
+  padding: 5px;
+  border-radius: 15px;
+  border: solid 1px var(--primary-accent);
+}
+
+.sub {
+  position: relative;
+}
+
+.pitch2 {
+  max-width: 100vw;
+  width: 100%;
+  height: 660px;
+}
+
+.squad.save {
+  margin-top: 5.5em;
+}
+
+.create-tm-btn.save {
+  margin-top: 0.5em;
+}
+
+.subs-txt {
+  position: absolute;
+  left: 40%;
+  bottom: 8%;
+  width: 90px;
+  color: wheat;
+}
+
+.plyr-modal-ctn {
+  position: fixed;
+  top: 40%;
+  left: 13.5%;
+  background-color: var(--secondary-bg);
+  height: 15vh;
+  width: 300px;
+  display: flex;
+  border-radius: 15px;
+  flex-direction: column;
+  gap: 1em;
+  align-items: center;
+  justify-content: center;
+  z-index: 8;
+}
+
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #12121296;
+  z-index: 7;
+}
+
+.plyr-modal-btn {
+  width: 250px;
+}
+
+.swap-active * {
+  pointer-events: none;
+}
+
+.swap-active .highlighted {
+  pointer-events: auto; /* Allow interaction with highlighted substitutes */
+}

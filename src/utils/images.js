@@ -74,10 +74,17 @@ import aduanaKit from '../assets/aduana-kit.png';
 import goldstarsKit from '../assets/goldstar-kit.png';
 import warning from'../assets/warning.png';
 import info from'../assets/info.png';
+import evans from'../assets/evans-removebg-preview.png';
+import asare from'../assets/asare-removebg-preview.png';
+import awuni from'../assets/awuni-removebg-preview.png';
+
 
 const images = {
   add,
   bannerPic,
+  evans,
+  asare,
+  awuni,
   info,
   warning,
   kotokoKit,

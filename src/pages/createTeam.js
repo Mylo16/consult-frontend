@@ -5,15 +5,44 @@ import Fixtures from "../components/fixtures";
 import Partners from "../components/partners";
 import Footer from "../components/footer";
 import PlayerList from "../components/playerList";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import '../css/playerList.css'
+import { initializeSquad, removePlayer, squadReset } from "../redux/playerSelectSlice";
+import { useDispatch, useSelector } from "react-redux";
+import SaveTeam from "../components/saveTeam";
 
 function CreateTeam() {
   const location = useLocation();
   const [showPlayerList, setShowPlayerList] = useState(false);
+  const [playerCategory, setShowPlayerCategory] = useState('');
+  const dispatch = useDispatch();
+  const { budget} = useSelector((state) => state.squad);
+  const [showTeam, setShowTeam] = useState(false);
 
   const handleShowPlayerListClicked = () => {
+    setShowPlayerCategory('All');
     setShowPlayerList(!showPlayerList);
   }
+
+  const handleShowPlayerCategory = (category) => {
+   setShowPlayerCategory(category);
+  }
+
+  const handleSaveTeamClose = () => {
+    setShowTeam(!showTeam);
+  }
+
+  const handleCreateTeam = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+    setShowTeam(true);
+  }
+
+  useEffect(() => {
+    dispatch(initializeSquad());
+  }, []);
 
   return(
     <>
@@ -60,14 +89,14 @@ function CreateTeam() {
         </div>
       </header>
       <section className="pick-sq-container">
-        <div className={`pick-sq ${showPlayerList ? 'slide-out' : ''}`}>
+        <div className={`pick-sq ${showPlayerList || showTeam ? 'slide-out' : ''}`}>
           <div className="go-home-link">
             <img src={images.arrowLeft} alt="go-home" />
             <Link to='/home'>Go Home</Link>
           </div>
           <div className="pick-sq-txt">Pick your squad</div>
           <div onClick={handleShowPlayerListClicked} className="plyr-list">
-            <Link>Players List</Link>
+            <Link>Player List</Link>
             <span>&#8594;</span>
           </div>
           <div className="pick-sq-div1">
@@ -78,12 +107,12 @@ function CreateTeam() {
               </div>
               <div className="budget">
                 <div className="budget-txt">Budget</div>
-                <div className="budget-value">₵100m</div>
+                <div className={`budget-value ${budget < 0 ? 'neg-value' : ''}`}>₵{budget.toFixed(1)}m</div>
               </div>
             </div>
             <div className="fill-refresh-container">
               <button className="fill-btn">Auto-fill</button>
-              <div>
+              <div onClick={() => dispatch(squadReset())}>
                 <img src={images.refresh} alt="refresh" className="refresh"/>
               </div>
             </div>
@@ -98,12 +127,19 @@ function CreateTeam() {
               <img className="pitch" src={images.pitch} alt="pitch" />
             </div>
             <div className="squad">
-              <Squad />
+              <Squad
+                showPlayerList={handleShowPlayerListClicked}
+                showPlayerCategory={handleShowPlayerCategory}
+                createTeam={handleCreateTeam}
+              />
             </div>
           </div>
         </div>
         <div className={`player-list-container ${showPlayerList ? 'slide-in' : ''}`}>
-          {showPlayerList && <PlayerList showSquad={handleShowPlayerListClicked} />}
+          {showPlayerList && <PlayerList squadCategory={playerCategory} showSquad={handleShowPlayerListClicked} />}
+        </div>
+        <div className={`save-tm-ctn ${showTeam ? 'slide-in' : ''}`}>
+          {showTeam && <SaveTeam showTeam={handleSaveTeamClose} />}
         </div>
       </section>
       <Fixtures />
