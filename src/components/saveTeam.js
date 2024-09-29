@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useNavigation } from "react-router-dom";
 import images from "../utils/images";
 import PlayerDetails from "./playerDetails";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import '../css/playerList.css';
 import '../css/saveTeam.css';
 import { addSubstitute } from "../redux/playerSelectSlice";
@@ -10,50 +10,59 @@ import { addSubstitute } from "../redux/playerSelectSlice";
 const SaveTeam = ({ showTeam }) => {
   const dispatch = useDispatch();
   const { startingForwards, startingMidfielders, startingDefenders, startingGk, substitutes } = useSelector((state) => state.squad);
+  const navigate = useNavigate();
 
   const [showPlayerDetails, setShowPlayerDetails] = useState(false);
   const [playerDetails, setPlayerDetails] = useState('');
   const [showPlayerModal, setShowPlayerModal] = useState(false);
   const [highlight, setHighlight] = useState([]);
   const [isSwapMode, setIsSwapMode] = useState(false);
+  const targetViewRef = useRef(null);
+  const [swapModal, setSwapModal] = useState(false);
+
+  const scrollToDiv = () => {
+    targetViewRef.current.scrollIntoView({ behavior: 'smooth' });  // Smooth scrolling
+  };
 
   const handlePlayerJerseyClick = (player, event) => {
     event.stopPropagation();
+    if(isSwapMode) {
+    return handleSubstituteClick(player), setSwapModal(false), document.body.style.overflow = 'auto';
+    }
     setShowPlayerModal(true);
     setPlayerDetails(player);
     document.body.style.overflow = 'hidden';
+    
   };
 
   const handleSaveTeam = () => {
-    // Implement the save team logic
+    navigate('/')
   };
 
   const handlePlayerSwap = () => {
-    // Enable swap mode and highlight eligible substitutes
-    if (playerDetails.position === 'FWD') {
+    scrollToDiv();
+    setShowPlayerModal(false);
+    setSwapModal(true);
+    if (playerDetails.position === 'GK') {
+      setHighlight(['GK']);
+    } else {
       setHighlight(['FWD', 'MID', 'DEF']);
     }
-    setIsSwapMode(true); // Enable swap mode
-    document.body.classList.add('swap-active'); // Add class to freeze the page
+    setIsSwapMode(true);
   };
 
   const closeModal = () => {
     setShowPlayerModal(false);
     setShowPlayerDetails(false);
     document.body.style.overflow = 'auto';
-    setIsSwapMode(false); // Disable swap mode after closing
-    document.body.classList.remove('swap-active'); // Remove the swap mode freeze
   };
 
   const handleSubstituteClick = (sub) => {
     if (!highlight.includes(sub.position)) return;
 
     dispatch(addSubstitute({playerOut: playerDetails, playerIn: sub}));
-
-    // Exit swap mode and remove highlights
     setIsSwapMode(false);
     setHighlight([]);
-    document.body.classList.remove('swap-active');
   };
 
   useEffect(() => {
@@ -77,7 +86,7 @@ const SaveTeam = ({ showTeam }) => {
         </div>
         <div className="plyr-detail">
           <div className="plyr-name">{player.name}</div>
-          <div className="plyr-price">$ {player.price}</div>
+          <div className="plyr-price">{player.position}</div>
         </div>
       </div>
     </div>
@@ -101,7 +110,7 @@ const SaveTeam = ({ showTeam }) => {
           <div className="pitch-container">
             <img className="pitch2" src={images.pitch} alt="pitch" />
           </div>
-          <div className="squad save">
+          <div ref={targetViewRef} className="squad save">
             <div className="sq-container">
               <div className="fwd-row">{startingForwards.map((fwd, index) => renderPlayer(fwd, index, "fwd"))}</div>
               <div className="mid-row">{startingMidfielders.map((mid, index) => renderPlayer(mid, index, "mid"))}</div>
@@ -111,9 +120,7 @@ const SaveTeam = ({ showTeam }) => {
               <div className="subs-ctn">
                 {substitutes.map((sub, index) => (
                   <div key={index} className={`sub-ctn ${highlight.includes(sub.position) ? 'highlighted' : ''}`}>
-                    <div onClick={() => handleSubstituteClick(sub)}>
-                      {renderPlayer(sub, index, "sub")}
-                    </div>
+                    {renderPlayer(sub, index, "sub")}
                   </div>
                 ))}
               </div>
@@ -138,6 +145,9 @@ const SaveTeam = ({ showTeam }) => {
             <button className="plyr-modal-btn" onClick={() => { setShowPlayerDetails(true); document.body.style.overflow = 'hidden'; }}>Player Details</button>
           </div>
         </>
+      )}
+      {swapModal && (
+        <div className="modal-overlay"></div>
       )}
     </>
   );

@@ -50,6 +50,8 @@
   padding: 5px;
   border-radius: 15px;
   border: solid 1px var(--primary-accent);
+  position: relative;
+  z-index: 8;
 }
 
 .sub {

@@ -7,7 +7,7 @@ import Footer from "../components/footer";
 import PlayerList from "../components/playerList";
 import { useEffect, useState } from "react";
 import '../css/playerList.css'
-import { initializeSquad, removePlayer, squadReset } from "../redux/playerSelectSlice";
+import { removePlayer, squadReset } from "../redux/playerSelectSlice";
 import { useDispatch, useSelector } from "react-redux";
 import SaveTeam from "../components/saveTeam";
 
@@ -16,7 +16,7 @@ function CreateTeam() {
   const [showPlayerList, setShowPlayerList] = useState(false);
   const [playerCategory, setShowPlayerCategory] = useState('');
   const dispatch = useDispatch();
-  const { budget} = useSelector((state) => state.squad);
+  const { budget, startingForwards } = useSelector((state) => state.squad);
   const [showTeam, setShowTeam] = useState(false);
 
   const handleShowPlayerListClicked = () => {
@@ -41,7 +41,7 @@ function CreateTeam() {
   }
 
   useEffect(() => {
-    dispatch(initializeSquad());
+    console.log(startingForwards);
   }, []);
 
   return(

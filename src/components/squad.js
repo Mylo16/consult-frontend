@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import PlayerDetails from "./playerDetails";
 import images from "../utils/images";
-import { removePlayer } from "../redux/playerSelectSlice";
+import { initializeSquad, removePlayer } from "../redux/playerSelectSlice";
 
 function Squad({showPlayerList, showPlayerCategory, createTeam }) {
   const { FWD, MID, DEF, GK, budget, selectedPlayers } = useSelector((state) => state.squad);
@@ -59,6 +59,7 @@ function Squad({showPlayerList, showPlayerCategory, createTeam }) {
   }
 
   const handleCreateTeam = () => {
+    dispatch(initializeSquad());
     createTeam();
   }
 
@@ -75,7 +76,7 @@ function Squad({showPlayerList, showPlayerCategory, createTeam }) {
               </div>
               <div className="plyr-detail">
                 <div className="plyr-name">{forward.name}</div>
-                <div className="plyr-price">$ {forward.price}</div>
+                <div className="plyr-price">$ {forward.price.toFixed(1)}</div>
               </div>
             </div>
             </div>
@@ -101,7 +102,7 @@ function Squad({showPlayerList, showPlayerCategory, createTeam }) {
               </div>
               <div className="plyr-detail">
                 <div className="plyr-name">{midfielder.name}</div>
-                <div className="plyr-price">$ {midfielder.price}</div>
+                <div className="plyr-price">$ {midfielder.price.toFixed(1)}</div>
               </div>
             </div>
             </div>
@@ -127,7 +128,7 @@ function Squad({showPlayerList, showPlayerCategory, createTeam }) {
               </div>
               <div className="plyr-detail">
                 <div className="plyr-name">{defender.name}</div>
-                <div className="plyr-price">$ {defender.price}</div>
+                <div className="plyr-price">$ {defender.price.toFixed(1)}</div>
               </div>
             </div>
             </div>
@@ -154,7 +155,7 @@ function Squad({showPlayerList, showPlayerCategory, createTeam }) {
               </div>
               <div className="plyr-detail">
                 <div className="plyr-name">{goalkeeper.name}</div>
-                <div className="plyr-price">$ {goalkeeper.price}</div>
+                <div className="plyr-price">$ {goalkeeper.price.toFixed(1)}</div>
               </div>
             </div>
             </div>

@@ -71,7 +71,6 @@ const playerSelectSlice = createSlice({
       state.GK = Array(2).fill(null);
       state.budget = 100;
 
-      // Reset starters and substitutes to null
       state.startingForwards = [];
       state.startingMidfielders = [];
       state.startingDefenders = [];
@@ -80,7 +79,7 @@ const playerSelectSlice = createSlice({
     },
     addSubstitute: (state, action) => {
       const { playerOut, playerIn } = action.payload;
-
+    
       const swapPlayers = (startingArray, substitutes) => {
         const updatedStarting = startingArray.map(player =>
           player?.id === playerOut.id ? playerIn : player
@@ -88,23 +87,84 @@ const playerSelectSlice = createSlice({
         const updatedSubstitutes = substitutes.map(player =>
           player?.id === playerIn.id ? playerOut : player
         );
-
+    
         return { updatedStarting, updatedSubstitutes };
       };
 
+      const swapPlayersInPosition = (incomingArray, outgoingArray, substitutes) => {
+        const updatedOutgoingArray = outgoingArray.filter((player) => player.id !== playerOut.id);
+        incomingArray.push(playerIn);
+        const updatedIncomingArray = incomingArray;
+        const updatedSubstitutes = substitutes.map(player =>
+          player?.id === playerIn.id ? playerOut : player
+        );
+
+        return {updatedOutgoingArray, updatedIncomingArray, updatedSubstitutes};
+      }
+    
+      const canSubstitute = (positionArray, minCount) => {
+        // Ensure the position has the minimum number of players
+        const count = positionArray.filter(player => player !== null).length;
+        return count > minCount;
+      };
+    
       if (playerOut.position === 'FWD') {
-        const { updatedStarting, updatedSubstitutes } = swapPlayers(state.startingForwards, state.substitutes);
-        state.startingForwards = updatedStarting;
-        state.substitutes = updatedSubstitutes;
+        if (playerIn.position === 'FWD') {
+          // Swap forward for forward
+          const { updatedStarting, updatedSubstitutes } = swapPlayers(state.startingForwards, state.substitutes);
+          state.startingForwards = updatedStarting;
+          state.substitutes = updatedSubstitutes;
+        } else if (playerIn.position === 'MID' && canSubstitute(state.startingForwards, 1)) {
+          // Move midfielder to startingMidfielders and ensure at least 1 forward
+          const { updatedOutgoingArray, updatedIncomingArray, updatedSubstitutes } = swapPlayersInPosition(state.startingMidfielders, state.startingForwards, state.substitutes);
+          state.startingMidfielders = updatedIncomingArray;
+          state.startingForwards = updatedOutgoingArray;
+          state.substitutes = updatedSubstitutes;
+        } else if (playerIn.position === 'DEF' && canSubstitute(state.startingForwards, 1)) {
+          const { updatedOutgoingArray, updatedIncomingArray, updatedSubstitutes } = swapPlayersInPosition(state.startingDefenders, state.startingForwards, state.substitutes);
+          state.startingDefenders = updatedIncomingArray;
+          state.startingForwards = updatedOutgoingArray;
+          state.substitutes = updatedSubstitutes;
+        }
       } else if (playerOut.position === 'MID') {
-        const { updatedStarting, updatedSubstitutes } = swapPlayers(state.startingMidfielders, state.substitutes);
-        state.startingMidfielders = updatedStarting;
-        state.substitutes = updatedSubstitutes;
+        if (playerIn.position === 'MID') {
+          // Swap midfielder for midfielder
+          const { updatedStarting, updatedSubstitutes } = swapPlayers(state.startingMidfielders, state.substitutes);
+          state.startingMidfielders = updatedStarting;
+          state.substitutes = updatedSubstitutes;
+        } else if (playerIn.position === 'FWD' && canSubstitute(state.startingMidfielders, 3)) {
+          const { updatedOutgoingArray, updatedIncomingArray, updatedSubstitutes } = swapPlayersInPosition(state.startingForwards, state.startingMidfielders, state.substitutes);
+          state.startingForwards = updatedIncomingArray;
+          state.startingMidfielders = updatedOutgoingArray;
+          state.substitutes = updatedSubstitutes;
+        } else if (playerIn.position === 'DEF' && canSubstitute(state.startingMidfielders, 3)) {
+          // Move defender to startingDefenders and ensure at least 3 midfielders
+          const { updatedOutgoingArray, updatedIncomingArray, updatedSubstitutes } = swapPlayersInPosition(state.startingDefenders, state.startingMidfielders, state.substitutes);
+          state.startingDefenders = updatedIncomingArray;
+          state.startingMidfielders = updatedOutgoingArray;
+          state.substitutes = updatedSubstitutes;
+        }
       } else if (playerOut.position === 'DEF') {
-        const { updatedStarting, updatedSubstitutes } = swapPlayers(state.startingDefenders, state.substitutes);
-        state.startingDefenders = updatedStarting;
-        state.substitutes = updatedSubstitutes;
+        if (playerIn.position === 'DEF') {
+          // Swap defender for defender
+          const { updatedStarting, updatedSubstitutes } = swapPlayers(state.startingDefenders, state.substitutes);
+          state.startingDefenders = updatedStarting;
+          state.substitutes = updatedSubstitutes;
+        } else if (playerIn.position === 'FWD' && canSubstitute(state.startingDefenders, 3)) {
+          // Move forward to startingForwards and ensure at least 3 defenders
+          const { updatedOutgoingArray, updatedIncomingArray, updatedSubstitutes } = swapPlayersInPosition(state.startingForwards, state.startingDefenders, state.substitutes);
+          state.startingForwards = updatedIncomingArray;
+          state.startingDefenders = updatedOutgoingArray;
+          state.substitutes = updatedSubstitutes;
+        } else if (playerIn.position === 'MID' && canSubstitute(state.startingDefenders, 3)) {
+          // Move midfielder to startingMidfielders and ensure at least 3 defenders
+          const { updatedOutgoingArray, updatedIncomingArray, updatedSubstitutes } = swapPlayersInPosition(state.startingMidfielders, state.startingDefenders, state.substitutes);
+          state.startingMidfielders = updatedIncomingArray;
+          state.startingDefenders = updatedOutgoingArray;
+          state.substitutes = updatedSubstitutes;
+        }
       } else if (playerOut.position === 'GK') {
+        // Swap goalkeeper for goalkeeper
         const { updatedStarting, updatedSubstitutes } = swapPlayers(state.startingGk, state.substitutes);
         state.startingGk = updatedStarting;
         state.substitutes = updatedSubstitutes;
