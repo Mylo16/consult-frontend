@@ -47,7 +47,6 @@ export default function LoginPage() {
             <p>Don't have an account yet?</p>
             <a href='http://localhost:3000/signup' className="signup-btn">Sign Up</a>
           </div>
-          <h1 className="login-logo">Consulta</h1>
         </div>
         <p className="welcome-txt">Welcome Back</p>
         <p className="signin-txt">Sign in to manage your project</p>

@@ -5,13 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import '../css/playerList.css';
 import '../css/saveTeam.css';
-import { addSubstitute } from "../redux/playerSelectSlice";
+import { addSubstitute, makeCaptain } from "../redux/playerSelectSlice";
 
 const SaveTeam = ({ showTeam }) => {
   const dispatch = useDispatch();
   const { startingForwards, startingMidfielders, startingDefenders, startingGk, substitutes } = useSelector((state) => state.squad);
   const navigate = useNavigate();
-
   const [showPlayerDetails, setShowPlayerDetails] = useState(false);
   const [playerDetails, setPlayerDetails] = useState('');
   const [showPlayerModal, setShowPlayerModal] = useState(false);
@@ -19,25 +18,46 @@ const SaveTeam = ({ showTeam }) => {
   const [isSwapMode, setIsSwapMode] = useState(false);
   const targetViewRef = useRef(null);
   const [swapModal, setSwapModal] = useState(false);
+  const [isSub, setIsSub] = useState(false);
+  const [captaincy, setCaptaincy] = useState(false);
 
   const scrollToDiv = () => {
-    targetViewRef.current.scrollIntoView({ behavior: 'smooth' });  // Smooth scrolling
+    targetViewRef.current.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handlePlayerJerseyClick = (player, event) => {
+  const scrollToTop = () => {
+    targetViewRef.current.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  const handlePlayerJerseyClick = (player, positionClass, event) => {
     event.stopPropagation();
+    if(captaincy) {
+      setShowPlayerModal(true);
+      setPlayerDetails(player);
+      return;
+    }
     if(isSwapMode) {
     return handleSubstituteClick(player), setSwapModal(false), document.body.style.overflow = 'auto';
     }
     setShowPlayerModal(true);
+    if(positionClass === 'sub') {
+      setIsSub(true);
+    } else {
+      setIsSub(false);
+    }
     setPlayerDetails(player);
     document.body.style.overflow = 'hidden';
     
   };
 
   const handleSaveTeam = () => {
-    navigate('/')
+    setCaptaincy(true);
+    scrollToTop();
   };
+
+  const handleSignin = () => {
+    navigate('/login');
+  }
 
   const handlePlayerSwap = () => {
     scrollToDiv();
@@ -50,6 +70,11 @@ const SaveTeam = ({ showTeam }) => {
     }
     setIsSwapMode(true);
   };
+
+  const handlePlayerCaptaincy = (player) => {
+    dispatch(makeCaptain({ player }));
+    setShowPlayerModal(false);
+  }
 
   const closeModal = () => {
     setShowPlayerModal(false);
@@ -79,8 +104,10 @@ const SaveTeam = ({ showTeam }) => {
   }, [showPlayerModal]);
 
   const renderPlayer = (player, index, positionClass) => (
-    <div key={index} className={positionClass}>
-      <div onClick={(event) => handlePlayerJerseyClick(player, event)}>
+    <div key={index} className={`${positionClass} ${player.id === playerDetails.id && isSwapMode ? 'highlighted' : ''}`}>
+      <img className={`sub-arrow ${isSwapMode && (player.id === playerDetails.id || positionClass === 'sub') ? '' : 'none'}`} src={positionClass === 'sub' ? images.arrowUp : images.arrowDown } alt="arrow" />
+      {player.isCaptain && (<div className="captain">C</div>)}
+      <div onClick={(event) => handlePlayerJerseyClick(player, positionClass, event)}>
         <div className="js-container">
           <img className="jersey" src={player.jersey} alt="player-jersey" />
         </div>
@@ -94,9 +121,9 @@ const SaveTeam = ({ showTeam }) => {
 
   return (
     <>
-      <div className="st-ctn">
+      <div ref={targetViewRef} className="st-ctn">
         <div className="sln-row1">
-          <div>Pick Your Starting 11</div>
+          <div>{captaincy? 'Select Your Captain':'Pick Your Starting 11'}</div>
           <div onClick={showTeam}>
             <span>&#8592;</span>
             <Link>Back</Link>
@@ -116,7 +143,8 @@ const SaveTeam = ({ showTeam }) => {
               <div className="mid-row">{startingMidfielders.map((mid, index) => renderPlayer(mid, index, "mid"))}</div>
               <div className="def-row">{startingDefenders.map((def, index) => renderPlayer(def, index, "def"))}</div>
               <div className="gk-row">{startingGk.map((gk, index) => renderPlayer(gk, index, "gk"))}</div>
-
+              {!captaincy && (
+                <>
               <div className="subs-ctn">
                 {substitutes.map((sub, index) => (
                   <div key={index} className={`sub-ctn ${highlight.includes(sub.position) ? 'highlighted' : ''}`}>
@@ -125,7 +153,9 @@ const SaveTeam = ({ showTeam }) => {
                 ))}
               </div>
               <div className="subs-txt">Substitutes</div>
-              <button onClick={handleSaveTeam} className="create-tm-btn save">Save Team</button>
+              </>
+              )}
+              <button onClick={ captaincy ? handleSignin : handleSaveTeam } className="create-tm-btn save">{ captaincy ? 'Signin to Continue':'Save Team'}</button>
 
               {showPlayerDetails && (
                 <div className={`pd-ctn ${showPlayerDetails ? 'show':''}`} onClick={(e) => e.stopPropagation()}>
@@ -141,7 +171,7 @@ const SaveTeam = ({ showTeam }) => {
         <>
           <div className="modal-overlay"></div>
           <div className="plyr-modal-ctn">
-            <button onClick={handlePlayerSwap} className="plyr-modal-btn">Swap</button>
+            <button onClick={captaincy ? () => handlePlayerCaptaincy(playerDetails) : handlePlayerSwap} className={`plyr-modal-btn ${isSub ? 'none' : ''}`}>{captaincy ? 'Make Captain' : 'Swap'}</button>
             <button className="plyr-modal-btn" onClick={() => { setShowPlayerDetails(true); document.body.style.overflow = 'hidden'; }}>Player Details</button>
           </div>
         </>

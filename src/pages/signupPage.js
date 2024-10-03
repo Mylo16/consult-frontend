@@ -56,7 +56,6 @@ export default function SignupPage() {
             <p>Already have an account?</p>
             <a href='http://localhost:3000/login' className="signup-btn">Login</a>
           </div>
-          <h1 className="logo">Consulta</h1>
         </div>
         <p className="welcome-txt">Hello, Welcome</p>
         <p className="signin-txt">Sign up to schedule for a consult</p>

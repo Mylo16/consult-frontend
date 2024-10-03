@@ -24,7 +24,8 @@ const playerSelectSlice = createSlice({
       state.startingForwards = state.FWD.slice(0, 2); // First 2 forwards
       state.startingMidfielders = state.MID.slice(0, 4); // First 4 midfielders
       state.startingDefenders = state.DEF.slice(0, 4); // First 4 defenders
-      state.startingGk = state.GK.slice(0, 1); // First goalkeeper
+      state.startingGk = state.GK.slice(0, 1);
+      state.startingGk[0] = {...state.startingGk[0], isCaptain: true };
 
       // Set substitutes (remaining players from the arrays)
       state.substitutes = [
@@ -34,6 +35,35 @@ const playerSelectSlice = createSlice({
         state.GK[1],  // 1 goalkeeper
       ];
     },
+
+    makeCaptain: (state, action) => {
+      const { player } = action.payload;
+        state.startingForwards = state.startingForwards.map((p) => {
+          if (p && p.id === player.id) {
+            return { ...p, isCaptain: true };
+          }
+          return { ...p, isCaptain: false };
+        });
+        state.startingMidfielders = state.startingMidfielders.map((p) => {
+          if (p && p.id === player.id) {
+            return { ...p, isCaptain: true };
+          }
+          return { ...p, isCaptain: false };
+        });
+        state.startingDefenders = state.startingDefenders.map((p) => {
+          if (p && p.id === player.id) {
+            return { ...p, isCaptain: true };
+          }
+          return { ...p, isCaptain: false };
+        });
+        state.startingGk = state.startingGk.map((p) => {
+          if (p && p.id === player.id) {
+            return { ...p, isCaptain: true };
+          }
+          return { ...p, isCaptain: false };
+        });
+    },    
+
     addPlayer: (state, action) => {
       const { position, player } = action.payload;
 
@@ -173,6 +203,6 @@ const playerSelectSlice = createSlice({
   }
 });
 
-export const { addPlayer, removePlayer, squadReset, addSubstitute, initializeSquad } = playerSelectSlice.actions;
+export const { addPlayer, makeCaptain, removePlayer, squadReset, addSubstitute, initializeSquad } = playerSelectSlice.actions;
 
 export default playerSelectSlice.reducer;

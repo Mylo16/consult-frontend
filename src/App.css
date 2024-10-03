@@ -774,26 +774,25 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url(./assets/banner1.jpg);
   background-size: cover;
   width: 100%;
   height: 100vh;
 }
 
 .logo {
-  color: #3F20FF;
+  color: wheat;
   text-align: center;
 }
 
 .login-logo {
-  color: #3F20FF;
+  color: wheat;
 }
 
 .login-form {
   backdrop-filter: blur(1px);
   display: flex;
   flex-direction: column;
-  background-color: rgba(255, 255, 255, 0.89);
+  background-color: var(--secondary-bg);
   border-radius: 8px;
   width: 80%;
   position: relative;
@@ -816,7 +815,9 @@ header {
   border-radius: 999px;
   padding: 1px 16px;
   border: 1px solid #A293FF;
-  color: #3F20FF;
+  color: wheat;
+  display: flex;
+  align-items: center;
   height: 2em;
   text-decoration: none;
   background-color: transparent;
@@ -858,8 +859,8 @@ header {
 }
 
 .input-field {
-  width: 95%;
-  height: 1.8em;
+  width: 100%;
+  height: 2.5em;
   font-size: 0.9em;
   padding: 0.7em 0.5em 0;
   margin-bottom: 0.5em;
@@ -872,12 +873,12 @@ header {
   top: -0.1em;
   left: 0.5em;
   font-size: 0.7em;
-  color: blue;
+  color: wheat;
 }
 
 .input-field:focus:not(:placeholder-shown) {
   outline: none;
-  border: 1px solid rgba(0, 0, 0, 0.26);
+  border: 1px solid var(--border-color);
 }
 
 .input-field:not(:focus)::placeholder,
@@ -886,7 +887,7 @@ header {
 }
 
 .input-field:focus {
-  border: 2px solid #3F20FF;
+  border: 2px solid var(--border-color);
   outline: none;
 }
 
@@ -896,16 +897,17 @@ header {
   margin-top: 2em;
   border-radius: 5em;
   border: none;
-  background-color: #3F20FF;
+  background-color: var(--primary-accent);
   color: white;
 }
 
 .submit:disabled {
-  background-color: #3e20ff2d;
+  background-color: rgb(255, 152, 0);
+  opacity: 0.3;
 }
 
 .forgot-password {
-  color:#3F20FF;
+  color: #01d371;
   font-size: small;
 }
 

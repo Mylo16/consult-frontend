@@ -77,12 +77,16 @@ import info from'../assets/info.png';
 import evans from'../assets/evans-removebg-preview.png';
 import asare from'../assets/asare-removebg-preview.png';
 import awuni from'../assets/awuni-removebg-preview.png';
+import arrowUp from '../assets/arrow-up.png';
+import arrowDown from '../assets/arrow-down.png';
 
 
 const images = {
   add,
   bannerPic,
   evans,
+  arrowDown,
+  arrowUp,
   asare,
   awuni,
   info,

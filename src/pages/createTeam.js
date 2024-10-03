@@ -40,10 +40,6 @@ function CreateTeam() {
     setShowTeam(true);
   }
 
-  useEffect(() => {
-    console.log(startingForwards);
-  }, []);
-
   return(
     <>
       <header>
