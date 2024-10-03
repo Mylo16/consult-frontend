@@ -3,6 +3,8 @@ import images from "../utils/images"
 import { useDispatch, useSelector } from "react-redux";
 import { userSignin } from "../redux/userSlice"
 import LoadingBar from "../components/loadingBar";
+import { useNavigate } from "react-router-dom";
+import '../css/session.css';
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -10,6 +12,7 @@ export default function LoginPage() {
   const [userData, setUserData] = useState({email: '', password: ''});
   const [submitDisabled, setSubmitDisabled] = useState(true);
   const { loading, error } = useSelector((store) => store.user);
+  const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -45,7 +48,7 @@ export default function LoginPage() {
         <div className="header">
           <div className="signup-container">
             <p>Don't have an account yet?</p>
-            <a href='http://localhost:3000/signup' className="signup-btn">Sign Up</a>
+            <div onClick={()=> navigate('/signup')} className="signup-btn">Sign Up</div>
           </div>
         </div>
         <p className="welcome-txt">Welcome Back</p>
@@ -62,6 +65,10 @@ export default function LoginPage() {
         </div>
         <input type="submit" disabled={submitDisabled} className="submit" value="Login" />
         <p className="forgot-password">Forgot Password?</p>
+        <div className="google-auth">
+          <img src={images.google} alt="google-logo" />
+          <div>Signin with Google</div>
+        </div>
       </form>
       </div>
       </main>

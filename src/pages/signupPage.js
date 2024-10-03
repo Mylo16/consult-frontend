@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { userSignup } from "../redux/userSlice";
 import { useNavigate } from "react-router-dom";
 import LoadingBar from "../components/loadingBar";
+import '../css/session.css';
 
 export default function SignupPage() {
   const dispatch = useDispatch();
@@ -54,11 +55,11 @@ export default function SignupPage() {
         <div className="header">
           <div className="signup-container">
             <p>Already have an account?</p>
-            <a href='http://localhost:3000/login' className="signup-btn">Login</a>
+            <div onClick={() => navigate('/login')} className="signup-btn">Login</div>
           </div>
         </div>
         <p className="welcome-txt">Hello, Welcome</p>
-        <p className="signin-txt">Sign up to schedule for a consult</p>
+        <p className="signin-txt">Sign up to join game</p>
         <div className="input-container">
           <input placeholder="Email address" value={userData.email} onChange={handleOnChange} name="email" id="email" required className="input-field" />
           <label htmlFor="email" className="input-label">Email address</label>
@@ -78,6 +79,10 @@ export default function SignupPage() {
           <label htmlFor="name" className="input-label">Name</label>
         </div>
         <input type="submit" disabled={submitDisabled} className="submit" value="Sign Up" />
+        <div className="google-auth">
+          <img src={images.google} alt="google-logo" />
+          <div>Signin with Google</div>
+        </div>
       </form>
       </div>
       </main>

@@ -79,11 +79,13 @@ import asare from'../assets/asare-removebg-preview.png';
 import awuni from'../assets/awuni-removebg-preview.png';
 import arrowUp from '../assets/arrow-up.png';
 import arrowDown from '../assets/arrow-down.png';
+import google from '../assets/google.png';
 
 
 const images = {
   add,
   bannerPic,
+  google,
   evans,
   arrowDown,
   arrowUp,

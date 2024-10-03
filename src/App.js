@@ -9,6 +9,7 @@ import CreateTeam from './pages/createTeam';
 import LoginPage from './pages/loginPage';
 import SignupPage from './pages/signupPage';
 import HomePage from './pages/homePage';
+import LandingPage from './pages/landingPage';
 
 function App() {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ function App() {
           <Route path='/' element={<Navbar />}>
             <Route index element={<CreateTeam />} />
             <Route path='/home' element={<HomePage />} />
+            <Route path='/summary' element={<LandingPage />} />
           </Route>
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/login" element={<LoginPage />} />

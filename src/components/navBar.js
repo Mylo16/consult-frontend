@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import images from '../utils/images';
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeLink, setActiveLink] = useState(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLinkClicked = (index) => {
     setActiveLink(index);
@@ -39,7 +40,7 @@ function Navbar() {
         <div className="logo">
           <img className='logo-pic' src={images.leagueLogo}/>
         </div>
-        <div className='sign-in'>
+        <div onClick={() => navigate('/login')} className='sign-in'>
           <img className='profile' src={images.profile} />
           <p>Sign in</p>
         </div>
