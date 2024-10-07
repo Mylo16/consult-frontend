@@ -142,7 +142,6 @@
   font-size: 12px;
   position: relative;
   border: 2px solid var(--border-color);
-  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 1); */
 }
 
 .player-card::after {

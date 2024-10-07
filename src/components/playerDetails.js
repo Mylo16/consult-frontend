@@ -10,7 +10,7 @@ const PlayerDetails = ({ selected, details, closeDetails, removePlayer }) => {
     <>
         <div className="close-bar-ctn" onClick={() => closeDetails()}><div className="close-bar"></div></div>
         <div className="pd-row1">
-          <div className="pd-img-ctn"><img className="pd-img" src={details.image} alt="player image"/></div>
+          <div className="pd-img-ctn"><img className="pd-img" src={details.image} alt="player-image"/></div>
           <div className="pd-col2-ctn">
             <div className="pd-col2-po">{details.position}</div>
             <div className="pd-col2-name">{details.full_name}</div>

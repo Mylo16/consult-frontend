@@ -259,9 +259,15 @@ const PlayerList = ({ squadCategory, showSquad }) => {
           <div className="no-list">No list of players for this sort</div>
         )}
       </div>
-      <div className={`pd-ctn ${showPlayerDetails ? 'show':''}`}>
-        <PlayerDetails details={playerDetails} closeDetails={handleDetailsClose} />
-      </div>
+      {showPlayerDetails && (
+        <>
+          <div className="modal-overlay"></div>
+          <div className={`pd-ctn ${showPlayerDetails ? 'show':''}`}>
+            <PlayerDetails details={playerDetails} closeDetails={handleDetailsClose} />
+          </div>
+        </>
+      )}
+      
     </div>
   );
 };

@@ -30,6 +30,17 @@ body {
   font-family: 'Poppins', sans-serif;
   background-color: var(--primary-bg);
   color: var(--primary-text);
+  width: 100%;
+  overflow: hidden;
+}
+
+body::-webkit-scrollbar {
+  width: 10px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #ccc; /* Customize scrollbar thumb color */
+  border-radius: 5px;
 }
 
 a {
@@ -241,6 +252,7 @@ header {
   position: absolute;
   right: 5em;
   gap: 5px;
+  font-size: 13px;
 }
 
 .profile {
@@ -304,21 +316,31 @@ header {
   width: 200px;
 }
 
-
-.header-links {
+.header-links-ctn {
+  font-size: 13px;
   position: absolute;
+  background-color: #121212;
   bottom: 0;
   z-index: 2;
-  font-size: 13px;
   width: 100%;
+}
+
+.header-links {
   display: flex;
-  background-color: #121212;
-  justify-content: space-between;
+  white-space: nowrap;
+  gap: 20px;
+  overflow-x: scroll;
+}
+
+.header-links::-webkit-scrollbar {
+  height: 3px;
+  display: none;
 }
 
 .nav-link {
   position: relative;
-  padding: 0.9em;
+  padding: 10px;
+
 }
 
 .nav-link::after {
@@ -566,12 +588,13 @@ header {
 }
 
 .fix-row1 {
-  background-color: var(--primary-accent);
+  background: linear-gradient(90deg, #DF1EFF -28.65%, var(--secondary-accent) 100%);
   align-items: center;
   text-align: center;
   margin: -10px -5px 0 -5px;
   border-radius: 10px 10px 0 0;
   padding: 15px 0;
+  color: rgb(12, 12, 82);
 }
 
 .fix-row2 {

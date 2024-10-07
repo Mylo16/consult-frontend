@@ -56,6 +56,7 @@ function CreateTeam() {
           <img className="banner-pic1" src={images.bannerPic} alt="banner-pic" />
         </div>
         <h1 className="header-title">GPL Play</h1>
+        <div className="header-links-ctn">
         <div className="header-links">
           <Link
             to="/"
@@ -81,6 +82,7 @@ function CreateTeam() {
           >
             News
           </Link>
+        </div>
         </div>
         </div>
       </header>
