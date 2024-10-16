@@ -10,6 +10,8 @@ import LoginPage from './pages/loginPage';
 import SignupPage from './pages/signupPage';
 import HomePage from './pages/homePage';
 import LandingPage from './pages/landingPage';
+import Points from './pages/points';
+import PickTeam from './pages/pickTeam';
 
 function App() {
   const dispatch = useDispatch();
@@ -27,6 +29,8 @@ function App() {
             <Route index element={<CreateTeam />} />
             <Route path='/home' element={<HomePage />} />
             <Route path='/summary' element={<LandingPage />} />
+            <Route path='/summary/points' element={<Points />} />
+            <Route path='/summary/team' element={<PickTeam />} />
           </Route>
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/login" element={<LoginPage />} />

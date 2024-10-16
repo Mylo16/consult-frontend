@@ -229,7 +229,7 @@ header {
 }
 
 .logo {
-  background-color: var(--muted-text);
+  background: linear-gradient(90deg, #DF1EFF -28.65%, var(--secondary-accent) 100%);
   position: absolute;
   display: flex;
   top: 0;

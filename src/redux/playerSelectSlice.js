@@ -62,6 +62,12 @@ const playerSelectSlice = createSlice({
           }
           return { ...p, isCaptain: false };
         });
+        state.substitutes = state.substitutes.map((p) => {
+          if (p && p.id === player.id) {
+            return { ...p, isCaptain: true };
+          }
+          return { ...p, isCaptain: false };
+        });
     },    
 
     addPlayer: (state, action) => {

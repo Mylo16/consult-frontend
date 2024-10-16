@@ -4,7 +4,7 @@ import groupedMatches from "../utils/teams";
 
 const Fixtures = () => {
   return(
-    <div className="fix-container">
+    <div className="fix-container extend">
       <div className="fix-row1">
         Fixtures
       </div>

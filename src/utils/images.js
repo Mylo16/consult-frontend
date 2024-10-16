@@ -80,11 +80,12 @@ import awuni from'../assets/awuni-removebg-preview.png';
 import arrowUp from '../assets/arrow-up.png';
 import arrowDown from '../assets/arrow-down.png';
 import google from '../assets/google.png';
-
+import world from '../assets/world.png';
 
 const images = {
   add,
   bannerPic,
+  world,
   google,
   evans,
   arrowDown,

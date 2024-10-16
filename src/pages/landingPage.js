@@ -1,19 +1,20 @@
 import images from "../utils/images";
-import { Link, useLocation } from "react-router-dom";
 import '../css/landingPage.css';
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import PlayerDetails from "../components/playerDetails";
 import Partners from '../components/partners';
 import Footer from '../components/footer';
+import Header from "../components/header";
+import { useNavigate } from "react-router-dom";
 
 export default function LandingPage() {
-  const location = useLocation();
   const { FWD, MID, DEF, GK } = useSelector((state) => state.squad);
   const [weekTeam, setWeekTeam] = useState(null);
   const [playerDetails, setPlayerDetails] = useState('');
   const [showPlayerDetails, setShowPlayerDetails] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const navigate = useNavigate()
 
   useEffect(() => {
     // Ensure that FWD, MID, DEF, and GK are not undefined or null
@@ -66,74 +67,7 @@ export default function LandingPage() {
 
   return (
     <>
-      <header>
-        <video autoPlay loop muted className="background-video">
-          <source src={images.bgVideo} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-        <div className="ll-container">
-          <img className="league-logo" src={images.leagueLogo} alt="league-logo" />
-        </div>
-        <div className="bg-overlay"></div>
-        <div className="overlay-content">
-          <div className="banner-pics">
-            <img className="banner-pic1" src={images.bannerPic} alt="banner-pic" />
-          </div>
-          <h1 className="header-title">GPL Play</h1>
-          <div className="header-links-ctn">
-            <div className="header-links">
-              <Link
-                to="/summary"
-                className={`nav-link ${location.pathname === '/summary' ? 'active-link' : ''}`}
-              >
-                Summary
-              </Link>
-              <Link
-                to="/summary/points"
-                className={`nav-link ${location.pathname === '/summary/points' ? 'active-link' : ''}`}
-              >
-                Points
-              </Link>
-              <Link
-                to="/summary/team"
-                className={`nav-link ${location.pathname === '/summary/team' ? 'active-link' : ''}`}
-              >
-                Pick Team
-              </Link>
-              <Link
-                to="/summary/transfers"
-                className={`nav-link ${location.pathname === '/summary/transfers' ? 'active-link' : ''}`}
-              >
-                Transfers
-              </Link>
-              <Link
-                to="/summary/leagues"
-                className={`nav-link ${location.pathname === '/summary/leagues' ? 'active-link' : ''}`}
-              >
-                Leagues
-              </Link>
-              <Link
-                to="/summary/news"
-                className={`nav-link ${location.pathname === '/summary/news' ? 'active-link' : ''}`}
-              >
-                News & Clues
-              </Link>
-              <Link
-                to="/summary/rules"
-                className={`nav-link ${location.pathname === '/summary/rules' ? 'active-link' : ''}`}
-              >
-                Rules
-              </Link>
-              <Link
-                to="/summary/prizes"
-                className={`nav-link ${location.pathname === '/summary/prizes' ? 'active-link' : ''}`}
-              >
-                Prizes
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header />
       <section>
         <div className="sm-row1">
           <div className="sm-row1-title">Gameweek 1</div>
@@ -157,6 +91,30 @@ export default function LandingPage() {
               <div className="highlight-name">A. Okrah</div>
             </div>
           </div>
+        </div>
+        <div className="sm-row2">
+          <div className="sm-ranking-ctn">
+            <div className="sm-ranking-title">Rankings</div>
+            <div className="sm-ranking-header">
+              <div className="sm-league-header">League</div>
+              <div className="sm-rank-header">Rank</div>
+            </div>
+            <div className="sm-ranking-row">
+              <div className="sm-ranking-name">
+                <img className="sm-ranking-logo" src={images.world} alt="team-logo"/>
+                <div>World Leaderboard</div>
+              </div>
+              <div>2,345,789</div>
+            </div>
+            <div className="sm-ranking-row">
+              <div className="sm-ranking-name">
+                <img className="sm-ranking-logo" src={images.kotoko} alt="team-logo"/>
+                <div>Asante Kotoko</div>
+              </div>
+              <div>533</div>
+            </div>
+          </div>
+          <button className="show-more" onClick={() => navigate('/summary/leagues')}>Show more</button>
         </div>
         <div className="sm-row2">
           <div className="sm-row2-title">
