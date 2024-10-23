@@ -1,0 +1,46 @@
+:root {
+  --primary-bg: #121212;
+  --secondary-bg: rgb(30, 30, 30);
+  --accent-bg: #2C2C2C;
+
+  --primary-text: #FFFFFF;
+  --secondary-text: #B3B3B3;
+  --muted-text: #757575;
+
+  --primary-accent: rgb(255, 152, 0);
+  --secondary-accent: #FFC107;
+  --error-color: #FF5722;
+  --success-color: #4CAF50;
+
+  --border-color: #333333;
+
+  --hover-bg: #333333;
+  --focus-outline: #FF9800;
+}
+
+.transfer-row3 {
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5em;
+  font-size: 14px;
+  color: wheat;
+}
+
+.plyr-list {
+  width: fit-content;
+  margin: 0;
+}
+
+.transfers-header {
+  width: 90%;
+  font-size: 18px;
+}
+
+.transfer-deadline {
+  text-align: center;
+  font-size: 14px;
+}
+
+.neg-value {
+  color: red;
+}

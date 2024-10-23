@@ -6,8 +6,9 @@ import teams from '../dummyData/teams';
 import PlayerDetails from "./playerDetails";
 import { useDispatch, useSelector } from "react-redux";
 import { addPlayer } from "../redux/playerSelectSlice";
+import { updateFreeTransfers } from "../redux/transfersSlice";
 
-const PlayerList = ({ squadCategory, showSquad }) => {
+const PlayerList = ({ squadCategory, showSquad, makeTransfer }) => {
   const [players] = useState(playersData);
   const [positionCriteria, setPositionCriteria] = useState(squadCategory || 'All');
   const [teamCriteria, setTeamCriteria] = useState('All');
@@ -46,6 +47,9 @@ const PlayerList = ({ squadCategory, showSquad }) => {
   
     if (currentPlayers.length < positionLimit[position]) {
       dispatch(addPlayer({ position, player }));
+      if(makeTransfer) {
+        dispatch(updateFreeTransfers({player}));
+      }
     } else {
       alert(`Maximum ${positionLimit[position]} players are allowed in the ${position} position`);
     }

@@ -4,6 +4,11 @@ import images from "../utils/images";
 import { useEffect, useRef, useState } from "react";
 import PlayerDetails from "../components/playerDetails";
 import { addSubstitute, makeCaptain } from "../redux/playerSelectSlice";
+import '../css/pickTeam.css';
+import Fixtures from '../components/fixtures';
+import Partners from '../components/partners';
+import Footer from '../components/footer';
+
 
 function PickTeam() {
   const dispatch = useDispatch();
@@ -109,9 +114,9 @@ function PickTeam() {
     <>
       <Header />
       <div>
-        <div>ManBoy Squad</div>
-        <div>Game Week 2</div>
-        <div>Deadline: 22 October, 2024</div>
+        <div className="team-name">ManBoy Squad</div>
+        <div className="pk-team-gw">Game Week 2</div>
+        <div className="pk-team-deadline">Deadline: 22 October, 2024</div>
       </div>
       <div className="pick-squad-div2">
           <div className="pitch-sponsors">
@@ -160,6 +165,9 @@ function PickTeam() {
         {swapModal && (
           <div className="modal-overlay"></div>
         )}
+        <Fixtures />
+        <Partners />
+        <Footer />
     </>
   );
 }

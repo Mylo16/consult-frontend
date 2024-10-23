@@ -12,6 +12,8 @@ import HomePage from './pages/homePage';
 import LandingPage from './pages/landingPage';
 import Points from './pages/points';
 import PickTeam from './pages/pickTeam';
+import Transfers from './pages/transfers';
+import Leagues from './pages/leagues';
 
 function App() {
   const dispatch = useDispatch();
@@ -31,6 +33,8 @@ function App() {
             <Route path='/summary' element={<LandingPage />} />
             <Route path='/summary/points' element={<Points />} />
             <Route path='/summary/team' element={<PickTeam />} />
+            <Route path='/summary/leagues' element={<Leagues />} />
+            <Route path='/summary/transfers' element={<Transfers />} />
           </Route>
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/login" element={<LoginPage />} />

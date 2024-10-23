@@ -5,8 +5,9 @@ import { useNavigate } from "react-router-dom";
 import PlayerDetails from "./playerDetails";
 import images from "../utils/images";
 import { initializeSquad, removePlayer } from "../redux/playerSelectSlice";
+import { handleFreeTransfers } from "../redux/transfersSlice";
 
-function Squad({showPlayerList, showPlayerCategory, createTeam }) {
+function Squad({showPlayerList, showPlayerCategory, createTeam, button="Create Team" }) {
   const { FWD, MID, DEF, GK, budget, selectedPlayers } = useSelector((state) => state.squad);
   const [playerDetails, setPlayerDetails] = useState('');
   const [showPlayerDetails, setShowPlayerDetails] = useState(false);
@@ -56,6 +57,9 @@ function Squad({showPlayerList, showPlayerCategory, createTeam }) {
     dispatch(removePlayer({position: player.position, player}));
     setShowPlayerDetails(false);
     document.body.style.overflow = 'auto';
+    if(button === "Make Transfer") {
+      dispatch((handleFreeTransfers(player)));
+    }
   }
 
   const handleCreateTeam = () => {
@@ -170,7 +174,7 @@ function Squad({showPlayerList, showPlayerCategory, createTeam }) {
           </div>
         ))}
       </div>
-      <button disabled={isDisable} onClick={handleCreateTeam} className={`create-tm-btn ${isDisable ? 'btn-disabled' : ''}`}>Create Team</button>
+      <button disabled={isDisable} onClick={handleCreateTeam} className={`create-tm-btn ${isDisable ? 'btn-disabled' : ''}`}>{button}</button>
       {showPlayerDetails && (
         <div className="pd-overlay"></div>
       )}
